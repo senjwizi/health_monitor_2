@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:health_monitor_2/objects/homeBar.dart';
+import 'package:health_monitor_2/bars/chartBar.dart';
+import 'package:health_monitor_2/bars/homeBar.dart';
+import 'package:health_monitor_2/bars/newDataBar.dart';
 import 'package:health_monitor_2/pages/chartBody.dart';
-import 'package:health_monitor_2/pages/chartBody1.dart';
 import 'package:health_monitor_2/pages/homeBody.dart';
+import 'package:health_monitor_2/pages/newDataBody.dart';
 import 'package:health_monitor_2/themes.dart';
-import 'objects/chartBar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,21 +21,23 @@ class _HomePageState extends State<HomePage> {
 
   int _currentPageIndex = 0;
 
-  List<Widget> listOfPages = [HomeBody(), const SizedBox(), ChartBody()];
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> listOfPages = [HomeBody(), NewDataBody(), ChartBody()];
+    List<AppBar> listOfBars = [HomeBar(context), NewDataBar(context), ChartBar(context)];
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background, //colorWhite,
-      appBar: _currentPageIndex == 0 ? HomeBar() : ChartBar(),
+      appBar: listOfBars[_currentPageIndex],
       bottomNavigationBar: GNav(
-        tabBorderRadius: 15,
+        tabBorderRadius: 5,
         haptic: false,
         curve: Curves.easeInOut,
         color: colorGrey,
         activeColor: colorBlack,
         iconSize: 34,
-        padding: EdgeInsets.symmetric(horizontal: 60, vertical: 40),
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 40),
         tabs: const [
           GButton(icon: Icons.window), //assessment
           GButton(icon: Icons.add_circle_outline), //assessment
@@ -43,9 +45,6 @@ class _HomePageState extends State<HomePage> {
         ],
         selectedIndex: _currentPageIndex,
         onTabChange: (value) => setState(() {
-          if (value == 1) {
-            Get.to(HomePage());
-          }
           _currentPageIndex = value;
           print(_currentPageIndex);
         }),

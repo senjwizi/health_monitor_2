@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import '../themes.dart';
 
 class UserWelcoming extends StatefulWidget {
   const UserWelcoming({super.key});
-
-  void setState(VoidCallback fn) {
-    getDay();
-  }
 
   @override
   State<UserWelcoming> createState() => UserWelcomingState();
@@ -18,6 +15,8 @@ class UserWelcomingState extends State<UserWelcoming> {
 
   @override
   Widget build(BuildContext context) {
+    Intl.defaultLocale = 'ru_RU';
+    initDate();
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,7 +26,7 @@ class UserWelcomingState extends State<UserWelcoming> {
           style: headerStyle,
         ),
         Text(
-          "Четверг, 8 Июня",
+          DateFormat('MMMMEEEEd').format(DateTime.now()), /*"Четверг, 8 Июня",*/
           style: subHeaderStyle,
         )
       ],
@@ -35,13 +34,4 @@ class UserWelcomingState extends State<UserWelcoming> {
   }
 }
 
-void getDay() {
-  var monday = 1;
-  var now = new DateTime.now();
-
-  while (now.weekday != monday) {
-    now = now.subtract(new Duration(days: 1));
-  }
-
-  print('Recent monday $now');
-}
+initDate()async => await initializeDateFormatting();
